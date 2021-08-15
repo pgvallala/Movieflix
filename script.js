@@ -18,15 +18,15 @@ async function getMovies(url) {
 }
 
 function showMovies(movies) {
-    main.innerHTML = "";
+  main.innerHTML = "";
 
-    movies.forEach((movie) => {
-        const {title, poster_Path, vote_average, overwiew} = movie;
+  movies.forEach((movie) => {
+    const { title, poster_Path, vote_average, overwiew } = movie;
 
-        const movieEl = document.createElement('div');
-        movieEl.classList.add('movie');
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
 
-        movieEl.innerHTML = `<img src="${IMG_PATH + poster_Path}" alt="${title}">
+    movieEl.innerHTML = `<img src="${IMG_PATH + poster_Path}" alt="${title}">
         <div class="movie-info">
         <h3>${title}</h3>
         <span class="${getClassByRate(vote_average)}">${vote_average}</span>
@@ -35,9 +35,31 @@ function showMovies(movies) {
         <h3>Overview</h3>
         ${overwiew}
         </div>
-        `
+        `;
 
-        main.appendChild(movieEl);
-    })
-
+    main.appendChild(movieEl);
+  });
 }
+
+function getClassByRate(vote) {
+  if (vote >= 8) {
+    return "green";
+  } else if (vote >= 5) {
+    return "orange";
+  } else {
+    return "red";
+  }
+}
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const searchTerm = search.value;
+
+  if(searchTerm && searchTerm !== ''){
+      getMovies(SEARCH_API + searchTerm)
+      search.value = '';
+  } else {
+      window.location.reload()
+  }
+});
